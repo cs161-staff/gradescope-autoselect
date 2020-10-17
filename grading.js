@@ -5,7 +5,10 @@
  * whether the ith rubric item should be selected for the currently viewed
  * submission. This currently assumes an additive rubric and that the last
  * rubric item is an "Incorrect/blank" rubric item so that Gradescope marks the
- * submission as graded.
+ * submission as graded. This also assumes that "None of the above" is the
+ * final answer choice after the answers in ANS_MASK. If "None of the above" is
+ * selected, grading proceeds as if no answer choices were selected. If
+ * everything is blank, no points are received.
  */
 function score() {
   const ANS_MASK = [0, 1, 0];
@@ -13,17 +16,18 @@ function score() {
   const checkboxes = Array.from(document.querySelectorAll("[id^='question_'] input[type=checkbox]"))
   const marked = checkboxes.map((e) => e.checked);
 
-  let ret = [];
-  let allIncorrect = true;
-  for (let i = 0; i < ANS_MASK.length; i++) {
-      if (ANS_MASK[i] == marked[i] || 0) {
-          ret.push(true);
-          allIncorrect = false;
-      } else {
-          ret.push(false);
-      }
+  let ret;
+  if (!marked.some((e) => e)) {
+      /* No marked boxes. Incorrect/blank. */
+      ret = new Array(ANS_MASK.length);
+      ret.fill(false);
+      ret.push(true);
+  } else {
+      /* Something was marked. */
+      ret = ANS_MASK.map((solution, i) => solution == marked[i]);
+      /* If all false, push true at the end, else push false. */
+      ret.push(ret.every((e) => !e));
   }
-  ret.push(allIncorrect);
   return ret;
 }
 
