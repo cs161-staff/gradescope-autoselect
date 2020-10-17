@@ -11,24 +11,24 @@
  * everything is blank, no points are received.
  */
 function score() {
-  const ANS_MASK = [0, 1, 0];
+    const ANS_MASK = [0, 1, 0];
 
-  const checkboxes = Array.from(document.querySelectorAll("[id^='question_'] input[type=checkbox]"))
-  const marked = checkboxes.map((e) => e.checked);
+    const checkboxes = Array.from(document.querySelectorAll("[id^='question_'] input[type=checkbox]"))
+    const marked = checkboxes.map((e) => e.checked);
 
-  let ret;
-  if (!marked.some((e) => e)) {
-      /* No marked boxes. Incorrect/blank. */
-      ret = new Array(ANS_MASK.length);
-      ret.fill(false);
-      ret.push(true);
-  } else {
-      /* Something was marked. */
-      ret = ANS_MASK.map((solution, i) => solution == marked[i]);
-      /* If all false, push true at the end, else push false. */
-      ret.push(ret.every((e) => !e));
-  }
-  return ret;
+    let ret;
+    if (!marked.some((e) => e)) {
+        /* No marked boxes. Incorrect/blank. */
+        ret = new Array(ANS_MASK.length);
+        ret.fill(false);
+        ret.push(true);
+    } else {
+        /* Something was marked. */
+        ret = ANS_MASK.map((solution, i) => solution == marked[i]);
+        /* If all false, push true at the end, else push false. */
+        ret.push(ret.every((e) => !e));
+    }
+    return ret;
 }
 
 // Run score() on console to see if it produces the correct grade.
@@ -39,14 +39,14 @@ function score() {
  * Grades the current submission based on the return value of score().
  */
 function grade() {
-  let scoredRubric = score();
-  let rubric = document.querySelectorAll('.rubricItem--key');
-  for (let i = 0; i < scoredRubric.length; i++) {
-      // Apply the item rubric[i] if scoredRubric[i] is true.
-      if (scoredRubric[i]) {
-          rubric[i].click();
-      }
-  }
+    let scoredRubric = score();
+    let rubric = document.querySelectorAll('.rubricItem--key');
+    for (let i = 0; i < scoredRubric.length; i++) {
+        // Apply the item rubric[i] if scoredRubric[i] is true.
+        if (scoredRubric[i]) {
+            rubric[i].click();
+        }
+    }
 }
 // Run grade() on console to see if the correct choice is selected.
 
@@ -58,18 +58,18 @@ function grade() {
  * grade and then hit the "Next Ungraded" button again.
  */
 {
-  let href = window.location.href;
-  let nextGraded = document.querySelector('.actionBar--action-next');
-  setInterval(() => {
-    if (href != window.location.href) {
-      href = window.location.href;
-      grade();
-      // Go to next ungraded. This means whatever submission is already graded is unaffected by this script.
-      nextGraded.click();
-    }
-  }, 50);
-  grade();
-  nextGraded.click();
+    let href = window.location.href;
+    let nextGraded = document.querySelector('.actionBar--action-next');
+    setInterval(() => {
+        if (href != window.location.href) {
+            href = window.location.href;
+            grade();
+            // Go to next ungraded. This means whatever submission is already graded is unaffected by this script.
+            nextGraded.click();
+        }
+    }, 50);
+    grade();
+    nextGraded.click();
 }
 
 //function grade() {
@@ -97,3 +97,6 @@ function grade() {
 //  //go to next ungraded. This means whatever submission is already graded is unaffected by this script.
 //  document.getElementsByClassName('actionBar--action-next')[0].click();
 //}
+//
+
+// vim: ts=4 sts=4 sw=4
