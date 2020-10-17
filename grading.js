@@ -47,15 +47,30 @@ function grade() {
           rubric[i].click();
       }
   }
-
-  // Go to next ungraded. This means whatever submission is already graded is unaffected by this script.
-  document.getElementsByClassName('actionBar--action-next')[0].click();
 }
 // Run grade() on console to see if the correct choice is selected.
 
-// If it works, paste this into the console to start the autograding procedure.
-// 1000 = 1 sec. Change this accordingly based on how fast your browser/internet runs.
-setInterval(grade, 500);
+// If it works, paste this inpoto the console to start the autograding procedure.
+
+/*
+ * Starts the autograding by polling for changes in the href of the window.
+ * When it changes, we have successfully loaded the next submission, so we
+ * grade and then hit the "Next Ungraded" button again.
+ */
+{
+  let href = window.location.href;
+  let nextGraded = document.querySelector('.actionBar--action-next');
+  setInterval(() => {
+    if (href != window.location.href) {
+      href = window.location.href;
+      grade();
+      // Go to next ungraded. This means whatever submission is already graded is unaffected by this script.
+      nextGraded.click();
+    }
+  }, 50);
+  grade();
+  nextGraded.click();
+}
 
 //function grade() {
 //  let scored_rubric = score();
