@@ -13,7 +13,7 @@
 function score() {
     const ANS_MASK = [0, 1, 0];
 
-    const checkboxes = Array.from(document.querySelectorAll("[id^='question_'] input[type=checkbox]"))
+    const checkboxes = Array.from(document.querySelectorAll("[id^='question_'] input[type='checkbox']"))
     const marked = checkboxes.map((e) => e.checked);
 
     let ret;
@@ -48,6 +48,7 @@ function grade() {
         }
     }
 }
+
 // Run grade() on console to see if the correct choice is selected.
 
 // If it works, paste this inpoto the console to start the autograding procedure.
@@ -71,32 +72,3 @@ function grade() {
     grade();
     nextGraded.click();
 }
-
-//function grade() {
-//  let scored_rubric = score();
-//  let rubric = document.getElementsByClassName('rubricItem--key');
-//  if (scored_rubric[0]) {
-//      rubric[0].click();
-//  } else if (scored_rubric[2]) {
-//      rubric[0].click();
-//  } else {
-//      rubric[1].click();
-//  }
-//  //go to next ungraded. This means whatever submission is already graded is unaffected by this script.
-//  document.getElementsByClassName('actionBar--action-next')[0].click();
-//}
-//
-//function grade() {
-//  let scored_rubric = score();
-//  let rubric = document.getElementsByClassName('rubricItem--key');
-//  if (scored_rubric[scored_rubric.length - 1]) {
-//      rubric[0].click();
-//  } else {
-//      rubric[1].click();
-//  }
-//  //go to next ungraded. This means whatever submission is already graded is unaffected by this script.
-//  document.getElementsByClassName('actionBar--action-next')[0].click();
-//}
-//
-
-// vim: ts=4 sts=4 sw=4
