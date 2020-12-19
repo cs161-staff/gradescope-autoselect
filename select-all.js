@@ -22,6 +22,11 @@ function score() {
         ret = new Array(ANS_MASK.length);
         ret.fill(false);
         ret.push(true);
+    } else if (marked[ANS_MASK.length] && ANS_MASK.some((solution, i) => marked[i])) {
+        /* 'None of the above' and something else selected. Incorrect. */
+        ret = new Array(ANS_MASK.length);
+        ret.fill(false);
+        ret.push(true);
     } else {
         /* Something was marked. */
         ret = ANS_MASK.map((solution, i) => solution == marked[i]);
