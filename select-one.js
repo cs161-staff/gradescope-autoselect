@@ -3,7 +3,8 @@
 /*
  * Returns the the index of the rubric item to be selected. The ith entry in
  * ANS says that the rubric item with that index should be selected if the ith
- * choice was selected. All indices are 0-indexed.
+ * choice was selected. All indices are 0-indexed. Null return values may be
+ * used to indicate that no option should be selected.
  */
 function score() {
     const ANS = [2, 2, 2, 0, 1];
@@ -24,8 +25,10 @@ function score() {
  */
 function grade() {
     let scoredRubric = score();
-    let rubric = document.querySelectorAll('.rubricItem--key');
-    rubric[scoredRubric].click();
+    if (scoredRubric != null) {
+        let rubric = document.querySelectorAll('.rubricItem--key');
+        rubric[scoredRubric].click();
+    }
 }
 
 // Run grade() on console to see if the correct choice is selected.
