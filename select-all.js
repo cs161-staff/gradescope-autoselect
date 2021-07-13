@@ -3,12 +3,22 @@
 /*
  * Returns an array of booleans such that the ith rubric item corresponds to
  * whether the ith rubric item should be selected for the currently viewed
- * submission. This currently assumes an additive rubric and that the last
- * rubric item is an "Incorrect/blank" rubric item so that Gradescope marks the
- * submission as graded. This also assumes that "None of the above" is the
- * final answer choice after the answers in ANS_MASK. If "None of the above" is
- * selected, grading proceeds as if no answer choices were selected. If
- * everything is blank, no points are received.
+ * submission.
+ *
+ * The current implementation uses ANS_MASK such that ANS_MASK[i] is 1 if
+ * selectin answer choice i was a correct answer and 0 if leaving it unselected
+ * was a correct answer.
+ *
+ * It will return an array of length ANS_MASK.length + 1, assuming that the
+ * (ANS_MASK.length)'th rubric item is an "Incorrect/blank" rubric item so that
+ * Gradescope marks the submission as graded. It assumes an additive rubric, so
+ * the rubric item will be marked if answer is correct.
+ *
+ * It also assumes that "None of the above" is the (ANS_MASK.length)'th answer
+ * choice. If "None of the above" and something else are selected, no points are
+ * received. If "None of the above" is selected by itself, grading proceeds as
+ * if no answer choices were selected. If everything is blank, no points are
+ * received.
  */
 function score() {
     const ANS_MASK = [0, 1, 0];
@@ -30,7 +40,8 @@ function score() {
     } else {
         /* Something was marked. */
         ret = ANS_MASK.map((solution, i) => solution == marked[i]);
-        /* If all false, push true at the end, else push false. */
+        /* If all rubric items are marked false, push true at the end for
+         * Incorrect/blank, else push false. */
         ret.push(ret.every((e) => !e));
     }
     return ret;
@@ -56,7 +67,8 @@ function grade() {
 
 // Run grade() on console to see if the correct choice is selected.
 
-// If it works, paste this inpoto the console to start the autograding procedure.
+// If it works, paste this input into the console to start the autograding
+// procedure.
 
 /*
  * Starts the autograding by polling for changes in the href of the window.
@@ -67,10 +79,12 @@ function grade() {
     let href = window.location.href;
     let nextGraded = document.querySelector('.actionBar--action-next');
     setInterval(() => {
+        /* Wait for updated URL. */
         if (href != window.location.href) {
             href = window.location.href;
+            /* Grade the submission. */
             grade();
-            // Go to next ungraded. This means whatever submission is already graded is unaffected by this script.
+            /* Go to next ungraded. */
             nextGraded.click();
         }
     }, 50);

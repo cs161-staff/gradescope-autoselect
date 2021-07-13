@@ -30,7 +30,8 @@ function grade() {
 
 // Run grade() on console to see if the correct choice is selected.
 
-// If it works, paste this inpoto the console to start the autograding procedure.
+// If it works, paste this input into the console to start the autograding
+// procedure.
 
 /*
  * Starts the autograding by polling for changes in the href of the window.
@@ -41,10 +42,12 @@ function grade() {
     let href = window.location.href;
     let nextGraded = document.querySelector('.actionBar--action-next');
     setInterval(() => {
+        /* Wait for updated URL. */
         if (href != window.location.href) {
             href = window.location.href;
+            /* Grade the submission. */
             grade();
-            // Go to next ungraded. This means whatever submission is already graded is unaffected by this script.
+            /* Go to next ungraded. */
             nextGraded.click();
         }
     }, 50);
