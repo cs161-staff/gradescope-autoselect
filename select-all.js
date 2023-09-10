@@ -77,7 +77,7 @@ function grade() {
  */
 {
     let href = window.location.href;
-    let nextGraded = document.querySelector('.actionBar--action-next');
+    let nextGraded = document.querySelector('[title="Shortcut: Z"]')
     setInterval(() => {
         /* Wait for updated URL. */
         if (href != window.location.href) {
